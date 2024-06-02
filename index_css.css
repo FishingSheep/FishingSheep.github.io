@@ -9,6 +9,42 @@
     margin-right: 10%;
 }
 
+/*期末報告所使用的格式*/
+.text4final {
+    font-size: 150%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.title_final {
+    font-size: 300%;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.title_graph {
+    font-size: 175%;
+    text-align: center;
+}
+
+.pic4final {
+    width: 60%;
+    height: 60%;
+    margin: auto;
+    display: block;
+}
+
+select.dropDown {
+    margin: auto;
+    display: block;
+}
+
+ul.list_final {
+    margin-left: 41%;
+    font-size: 125%;
+}
+
+/*RWD*/
 @media screen and (min-width: 800px) {
     .pic {
         float: right;

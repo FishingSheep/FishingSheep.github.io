@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jerry_Lin | Webpage</title>
+    <link rel="stylesheet" type="text/css" href="index_css.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src='d3.v7.min.js'></script>
+    <script src="https://unpkg.com/browse/@sgratzl/chartjs-chart-boxplot@3.6.0/build/index.umd.min.js"></script>
+</head>
+
+<body>
+    <!--網頁名稱-->
+    <div class="top">
+        <h1 class="title">林育揚的個人網站</h1>
+    </div>
+    <div style="background-color: #D0D0D0">
+        <!--Navigation Bar-->
+        <div>
+            <ul class="nav">
+                <li class="nav"><a href="index.html">主頁</a></li>
+                <li class="nav"><a href="aboutme.html">深入認識</a></li>
+                <li class="nav"><a href="studies.html">課業相關</a></li>
+                <li class="nav"><a href="final.html">期末報告</a></li>
+                <li class="nav"><a href="contact.html">聯絡我</a></li>
+            </ul>
+        </div>
+        <div style="background-color: #FFFFFF; margin-left: 7%; margin-right: 7%;">
+            <br><br>
+            <h1 class="title_final">動機</h1>
+            <div class="text4final">之所以選擇這個主題是因為上學期修水文學所得到的靈感，當時有一份作業是上中央氣象局的每日雨量的網站把資料抓下來，然後利用excel去計算各項指標。雖然當時只需算出一個測站的指標，但由於網頁本身沒有附csv檔，直接複製的話格式又會跑掉，仍花了我不少時間。</div>
+            <br><br><br>
+            <div class="text4final">如今已經掌握些許爬蟲技術，我想看能否運用爬蟲把資料更有效率的擷取下來，和當初不同的是，這次想挑戰看看能不能將所有測站的資料一口氣爬下來，並運用前半學期教的前端知識，將資料整理後運用Chart.js繪製圖表，呈現在個人網頁上。</div>
+            <br><br><br><br><br>
+            <h1 class="title_final">目標網站</h1>
+            <img class="pic4final" src="final/target.png">
+            <div class="text4final">上圖是中央氣象局的每日雨量資料網頁，我們的目標是爬取測站、年份、月份、日期和降雨量資料</div>
+            <h3 style="text-align: center;"><a href="https://www.cwa.gov.tw/V8/C/D/DailyPrecipitation.html" target="blank">(網址：https://www.cwa.gov.tw/V8/C/D/DailyPrecipitation.html)</a></h3>
+            <br><br><br><br><br>
+            <h1 class="title_final">結果呈現</h1>
+            <br>
+            <!--圖表類型的下拉式選單-->
+            <!--<label for="SID" style='font-size: 125%;'>請選擇指標、測站：</label>-->
+            <select id='TID' style='font-size: 125%;' class="dropDown">
+                <option value='逐年雨量圖表'>逐年雨量圖表</option>
+                <option value='月平均雨量'>月平均雨量</option>
+            </select>
+            <span>&ensp;</span>
+            <!--測站的下拉式選單-->
+            <select id="SID" onchange="selected()" style='font-size: 125%;'>
+                <option value="">測站選擇</option>
+                <option value='彭佳嶼'>彭佳嶼</option>
+                <option value='基隆'>基隆</option>
+                <option value='臺北'>臺北</option>
+                <option value='鞍部'>鞍部</option>
+                <option value='竹子湖'>竹子湖</option>
+                <option value='淡水'>淡水</option>
+                <option value='新北(原板橋)'>新北(原板橋)</option>
+                <option value='桃園'>桃園</option>
+                <option value='新竹'>新竹</option>
+                <option value='苗栗'>苗栗</option>
+                <option value='臺中'>臺中</option>
+                <option value='梧棲'>梧棲</option>
+                <option value='日月潭'>日月潭</option>
+                <option value='嘉義'>嘉義</option>
+                <option value='阿里山'>阿里山</option>
+                <option value='玉山'>玉山</option>
+                <option value='臺南'>臺南</option>
+                <option value='高雄'>高雄</option>
+                <option value='屏東'>屏東</option>
+                <option value='恆春'>恆春</option>
+                <option value='宜蘭'>宜蘭</option>
+                <option value='蘇澳'>蘇澳</option>
+                <option value='花蓮'>花蓮</option>
+                <option value='成功'>成功</option>
+                <option value='臺東'>臺東</option>
+                <option value='大武'>大武</option>
+                <option value='蘭嶼'>蘭嶼</option>
+                <option value='馬祖'>馬祖</option>
+                <option value='金門'>金門</option>
+                <option value='澎湖'>澎湖</option>
+                <option value='東吉島'>東吉島</option>
+            </select>
+            <span>&ensp;</span>
+            <h2 id='index_name' class="title_graph">(請先選擇指標與測站)</h2>
+            <!--<button type="button" onclick="indexFunction()">運行</button>-->
+            <!--期中報告目標圖表-->
+            <canvas id='myChart' style='margin-left: 30%; margin-right: 30%;height:30vh; width:20vw'></canvas>
+            <!--期中報告目標講解-->
+            <div style="text-align: center; font-size: 125%;">(若選擇圖表後顯示不出來可以按一下F12)</div>
+            <br>
+            <br>
+            <div class='text4final'>以上是在期中報告裡設定的目標，目標是計算各氣象站有關降雨的指標，由於時間不夠加上一直卡Bug所以只做了兩種指標，分別是逐年雨量、月平均雨量。</div>
+            <br><br><br><br><br>
+            <h1 style="text-align: center;">進階分析</h1>
+            <div class="text4final">根據期中報告的反饋，我們所制定的目標僅止於整理資料，而缺乏數據分析，因此我們選擇了台北地區的降雨資料進行分析，主要是考慮到台北與大家的生活較息息相關。首先計算台北地區的年降雨變率，之後針對2009~2023年的降雨資料做成年降雨量頻率統計圖表，我們將從這些指標來分析台北地區的降雨型態。</div>
+            <br>
+            <br>
+            <h2 class="title_graph">2009~2023年臺北年降雨量變率列表</h2>
+            <canvas id='myChart3' style='margin-left: 30%; margin-right: 30%;height:30vh; width:20vw'></canvas>
+            <br>
+            <br>
+            <div class="text4final">從計算結果來看，臺北地區的降雨變率並不大，皆位於10~20%左右，可以判斷臺北降雨相對穩定，單就氣候而言不容易發生嚴重的洪水及乾旱現象。</div>
+            <br><br><br><br><br>
+            <h2 class="title_graph">2009~2023年臺北年降雨量頻率統計</h2>
+            <!--降雨頻率圖-->
+            <canvas id='myChart2' style='margin-left: 30%; margin-right: 30%;height:30vh; width:20vw'></canvas>
+            <br>
+            <br>
+            <div class="text4final">X軸為降雨量(mm)；Y軸為頻率(次)。可以從這張圖表看出臺北年降雨頻率多集中於1500~3000mm之間，不僅證明了前面所計算的降雨變率的可靠性，也能看出臺北屬於多雨的環境，屬於濕潤氣候區(年降水量>1000mm)。</div>
+            <br><br><br><br><br><br>
+            <h1 class="title_final">結論</h1>
+            <div class="text4final">以氣候學的尺度來看，如此短期的時間尚不足以建構所謂的「氣候」(氣候統計的周期至少為30年)，但各測站所繪製出的圖表大多跟現實情況相符，北部較全年有雨，而南部夏雨冬乾。另外分析結果也能與實際的情況相應，例如從年降雨頻率的分析結果來看，確實符合台北屬於濕潤氣候區的描述。雖然可能含有瑕疵，如在月平均雨量的圖表下，南部的乾季並無顯示數據等，但仍可透過這些圖表看出一定的趨勢。</div>
+            <br><br><br><br><br>
+        </div>
+    </div>
+    <!--頁尾-->
+    <div class="bottom">
+        <p class="bottom">本網站著作權屬於林育揚</p>
+    </div>
+    <!--圖表製作區-->
+    <script type="text/javascript">
+    function selected() {
+        var station_index = document.getElementById('SID').value; //取得網頁中目前顯示的測站名稱
+
+
+        // 逐年雨量計算區
+        let ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = Chart.getChart('myChart');
+        if (myChart) {
+            myChart.destroy(); // 刪除先前的圖表以生成新的圖表
+        }
+
+        let station = station_index; // 將選中的測站作為目標
+
+        let url = "final/dailyrain/DailyRain_" + station + ".csv";
+        var data = [];
+        var Jan_total = 0,
+            Feb_total = 0,
+            Mar_total = 0,
+            Apr_total = 0,
+            May_total = 0,
+            Jun_total = 0,
+            Jul_total = 0,
+            Aug_total = 0,
+            Sep_total = 0,
+            Oct_total = 0,
+            Nov_total = 0,
+            Dec_total = 0;
+
+        if (document.getElementById('TID').value == '逐年雨量圖表') {
+
+            // 標題輸出
+            document.getElementById('index_name').innerHTML = "2009~2023年" + station_index + "氣象站逐年雨量";
+
+            d3.csv(url).then(function(ld) { // ld為載入的csv檔
+
+                for (let i = 31; i < ld.length; i += 32) {
+                    // 計算出年雨量
+                    let Year_rain = parseFloat(ld[i].Jan) + parseFloat(ld[i].Feb) + parseFloat(ld[i].Mar) + parseFloat(ld[i].Apr) + parseFloat(ld[i].May) + parseFloat(ld[i].Jun) + parseFloat(ld[i].Jul) + parseFloat(ld[i].Aug) + parseFloat(ld[i].Sep) + parseFloat(ld[i].Oct) + parseFloat(ld[i].Nov) + parseFloat(ld[i].Dec);
+                    data.push(parseInt(Year_rain)); // 轉成整數
+                }
+            });
+
+            let config = {
+                type: 'bar',
+                data: {
+                    labels: ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+                    datasets: [{
+                        label: '降雨量(mm)',
+                        data: data,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                }
+            };
+
+
+            new Chart(ctx, config);
+
+        } else if (document.getElementById('TID').value == '月平均雨量') {
+
+            // 標題輸出
+            document.getElementById('index_name').innerHTML = "2009~2023年" + station_index + "氣象站月平均雨量";
+
+            d3.csv(url).then(function(ld) { // ld為載入的csv檔
+
+                for (let i = 31; i < ld.length; i += 32) {
+                    // 計算出月平均雨量
+                    Jan_total = Jan_total + parseFloat(ld[i].Jan);
+                    Feb_total = Feb_total + parseFloat(ld[i].Feb);
+                    Mar_total = Mar_total + parseFloat(ld[i].Mar);
+                    Apr_total = Apr_total + parseFloat(ld[i].Apr);
+                    May_total = May_total + parseFloat(ld[i].May);
+                    Jun_total = Jun_total + parseFloat(ld[i].Jun);
+                    Jul_total = Jul_total + parseFloat(ld[i].Jul);
+                    Aug_total = Aug_total + parseFloat(ld[i].Aug);
+                    Sep_total = Sep_total + parseFloat(ld[i].Sep);
+                    Oct_total = Oct_total + parseFloat(ld[i].Oct);
+                    Nov_total = Nov_total + parseFloat(ld[i].Nov);
+                    Dec_total = Dec_total + parseFloat(ld[i].Dec);
+                }
+
+                // 轉成整數並放進data (計算月平均雨量時要除以12)
+                data.push(parseInt(Jan_total / 12));
+                data.push(parseInt(Feb_total / 12));
+                data.push(parseInt(Mar_total / 12));
+                data.push(parseInt(Apr_total / 12));
+                data.push(parseInt(May_total / 12));
+                data.push(parseInt(Jun_total / 12));
+                data.push(parseInt(Jul_total / 12));
+                data.push(parseInt(Aug_total / 12));
+                data.push(parseInt(Sep_total / 12));
+                data.push(parseInt(Oct_total / 12));
+                data.push(parseInt(Nov_total / 12));
+                data.push(parseInt(Dec_total / 12));
+            });
+
+
+            let config = {
+                type: 'bar',
+                data: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    datasets: [{
+                        label: '降雨量(mm)',
+                        data: data,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                }
+            };
+
+
+            new Chart(ctx, config); // 生成圖表
+        }
+    }
+    </script>
+    <script type="text/javascript">
+    var ctx3 = document.getElementById('myChart3').getContext('2d');;
+
+    var total_rain = 0;
+    var avg_rain = 0;
+    var data2 = [1669, 2278, 1758, 2910, 2541, 2147, 2519, 2431, 2339, 1621, 2369, 1702, 1908, 2656, 1787];
+    var RV = []; //降雨變率
+    var id = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+
+    // 計算平均降雨量
+    for (let i = 0; i < data2.length; i++) {
+        total_rain = avg_rain + data2[i];
+    }
+    avg_rain = total_rain / 15;
+
+    // 計算每年降雨變率
+    for (let i = 0; i < data2.length; i++) {
+        let year_RV = (data2[i] - avg_rain) / avg_rain;
+        RV.push(Math.round(year_RV, 2));
+    }
+
+    let config3 = {
+        type: 'line',
+        data: {
+            labels: id,
+            datasets: [{
+                label: '降雨變率(%)',
+                data: RV,
+                borderWidth: 4,
+                borderColor: '#FF7575',
+                backgroundColor: '#FF7575',
+            }]
+
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+        }
+    };
+
+    new Chart(ctx3, config3); // 生成圖表
+    </script>
+    <script type="text/javascript">
+    // 降雨發生頻率圖
+    let ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myChart2 = Chart.getChart('myChart2');
+
+    var data = [];
+    var fq = [0, 0, 0, 6, 5, 4, 0, 0];
+
+    let config2 = {
+        type: 'bar',
+        data: {
+            labels: ['~500', '~1000', '~1500', '~2000', '~2500', '~3000', '~3500', '~4000(mm)', ],
+            datasets: [{
+                label: '頻率(次)',
+                data: fq,
+                borderWidth: 1,
+                backgroundColor: '#ACD6FF',
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+        }
+    };
+
+
+    new Chart(ctx2, config2); // 生成圖表
+    </script>
+</body>
+
+</html>
